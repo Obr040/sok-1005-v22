@@ -42,7 +42,7 @@ ggplot(liste1, aes(wltp, stopp)) +
   geom_point() +
   geom_abline(intercept = 0, slope = 1, size = 0.5, color = "red") +
   geom_smooth(method = lm, se = FALSE, size = 0.75, color = "blue") +
-  labs(title="El-bilenes rekkevidde i forhold til de oppgitte WLTP-tallene og den 'reelle' WLTP-linjen") +
+  labs(title="EL-bilenes rekkevidde i forhold til oppgitte WLTP-tall") +
   scale_x_continuous("wltp", limits = c(200,600)) +
   scale_y_continuous("stopp", limits = c(200,600)) +
   theme_classic() 
