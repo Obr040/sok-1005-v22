@@ -1,0 +1,37 @@
+library(rvest)
+library(tidyverse)
+library(rlist)
+library(janitor)
+
+## Vi starter med å hente ut timeplanen til de tre kursene som jeg har.
+
+Emner <- list("https://timeplan.uit.no/emne_timeplan.php?sem=22v&module%5B%5D=SOK-1005-1&week=1-20&View=list",
+              "https://timeplan.uit.no/emne_timeplan.php?sem=22v&module%5B%5D=BED-3014-1&week=1-20&View=list",
+              "https://timeplan.uit.no/emne_timeplan.php?sem=22v&module%5B%5D=SOK-2001-1&week=1-20&View=list")
+
+
+## Deretter benytter vi oss av samme elementer med kode som allerede ble brukt i r-koden fra scrape_timeplan.
+## Vi gjør tabellene til en samlet liste, deretter benytter vi oss av en funksjon fra janitorpakken for å gi radene eller headeren navn.
+## Så rydder vi opp i datoene og velger de variablene som vi er ute etter.
+Scrape <- function(url) {
+      read_html(url) %>%
+           html_nodes(.,'table') %>% 
+           html_table(., fill = TRUE) %>% 
+           list.stack(.) %>% 
+           janitor::row_to_names(., 1) %>% 
+           separate(Dato, 
+                    into = c("Dag", "Dato"),
+                    sep = "(?<=[A-Za-z])(?=[0-9])") %>% 
+           mutate(Dato = as.Date(Dato, format = "%d.%m.%Y"), 
+                  Uke = strftime(Dato, format = "%V")) %>% 
+    select(Dag, Dato, Uke, Tid, Rom, Lærer)
+}
+
+## Vi mapper det sammen
+
+Timeplan <- map(Emner, Scrape)
+
+## Da får vi denne timeplanen:
+
+Timeplan
+
