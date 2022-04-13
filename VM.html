@@ -1,0 +1,85 @@
+
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+  
+  <head>
+    
+      <meta charset="utf-8">
+      <title>Bokeh Plot</title>
+      
+      
+        
+          
+        
+        
+          
+        <script type="text/javascript" src="https://cdn.bokeh.org/bokeh/release/bokeh-2.4.2.min.js"></script>
+        <script type="text/javascript">
+            Bokeh.set_log_level("info");
+        </script>
+        
+      
+      
+    
+  </head>
+  
+  
+  <body>
+    
+      
+        
+          
+          
+            
+              <div class="bk-root" id="a489a8f8-5620-42ea-a3f6-ecff1883a86b" data-root-id="17968"></div>
+            
+          
+        
+      
+      
+        <script type="application/json" id="18505">
+          {"0db749b1-2da5-4a9c-b116-02002f3f6e52":{"defs":[],"roots":{"references":[{"attributes":{"below":[{"id":"17979"}],"center":[{"id":"17982"},{"id":"17986"},{"id":"18006"}],"height":750,"left":[{"id":"17983"}],"renderers":[{"id":"17995"}],"title":{"id":"17969"},"toolbar":{"id":"17988"},"width":1500,"x_range":{"id":"17971"},"x_scale":{"id":"17975"},"y_range":{"id":"17973"},"y_scale":{"id":"17977"}},"id":"17968","subtype":"Figure","type":"Plot"},{"attributes":{"coordinates":null,"group":null,"items":[{"id":"18007"}],"location":"top_left"},"id":"18006","type":"Legend"},{"attributes":{"callback":null,"tooltips":[["Arrang\u00f8r","@LOCATION"],["\u00c5r","@YEAR"],["Vinner","@WINNER"],["Antall kamper","@MATCHES"],["Antall lag","@TEAMS"],["Antall m\u00e5l","@GOALS"],["Gjennomsnittlige tilskuere","@AVERAGE_ATTENDANCE"]]},"id":"17987","type":"HoverTool"},{"attributes":{},"id":"18004","type":"UnionRenderers"},{"attributes":{"num_minor_ticks":10},"id":"17980","type":"LogTicker"},{"attributes":{"tools":[{"id":"17987"}]},"id":"17988","type":"Toolbar"},{"attributes":{},"id":"18000","type":"AllLabels"},{"attributes":{},"id":"17971","type":"DataRange1d"},{"attributes":{"coordinates":null,"data_source":{"id":"17990"},"glyph":{"id":"17992"},"group":null,"hover_glyph":null,"muted_glyph":{"id":"17994"},"nonselection_glyph":{"id":"17993"},"view":{"id":"17996"}},"id":"17995","type":"GlyphRenderer"},{"attributes":{"coordinates":null,"group":null,"text":"VM i fotball og gjennomsnittlige m\u00e5l scoret"},"id":"17969","type":"Title"},{"attributes":{},"id":"17977","type":"LinearScale"},{"attributes":{"axis":{"id":"17983"},"coordinates":null,"dimension":1,"group":null,"ticker":null},"id":"17986","type":"Grid"},{"attributes":{"axis":{"id":"17979"},"coordinates":null,"group":null,"ticker":null},"id":"17982","type":"Grid"},{"attributes":{},"id":"17984","type":"BasicTicker"},{"attributes":{},"id":"17975","type":"LogScale"},{"attributes":{"source":{"id":"17990"}},"id":"17996","type":"CDSView"},{"attributes":{"data":{"AVERAGE_ATTENDANCE":[52918,49669,52491,42268,43517,68991,48388,46039,40571,40678,49098,50124,48847,27911,23423,29561,47511,20872,21352,32808],"AVERAGE_GOALS":{"__ndarray__":"mpmZmZmZBUBmZmZmZmYCQGZmZmZmZgJAAAAAAAAABECamZmZmZkFQJqZmZmZmQVAmpmZmZmZAUAAAAAAAAAEQGZmZmZmZgZAmpmZmZmZBUDNzMzMzMwEQAAAAAAAAAhAZmZmZmZmBkBmZmZmZmYGQM3MzMzMzAxAmpmZmZmZFUAAAAAAAAAQQM3MzMzMzBJAZmZmZmZmEEAzMzMzMzMPQA==","dtype":"float64","order":"little","shape":[20]},"COLORS":["#84E127","#E14827","#BC27E1","#2792E1","#BC27E1","#E04A6C","#BC27E1","#84E127","#BC27E1","#84E127","#BC27E1","#84E127","#BC27E1","#84E127","#BC27E1","#BC27E1","#84E127","#BC27E1","#BC27E1","#84E127"],"CONTINENT":["S\u00f8r-Amerika","Afrika","Europa","Asia","Europa","Nord-Amerika","Europa","S\u00f8r-Amerika","Europa","S\u00f8r-Amerika","Europa","S\u00f8r-Amerika","Europa","S\u00f8r-Amerika","Europa","Europa","S\u00f8r-Amerika","Europa","Europa","S\u00f8r-Amerika"],"EDITION":["2014 FIFA World Cup Brazil \u2122","2010 FIFA World Cup South Africa \u2122","2006 FIFA World Cup Germany \u2122","2002 FIFA World Cup Korea/Japan \u2122","1998 FIFA World Cup France \u2122","1994 FIFA World Cup USA \u2122","1990 FIFA World Cup Italy \u2122","1986 FIFA World Cup Mexico \u2122","1982 FIFA World Cup Spain \u2122","1978 FIFA World Cup Argentina \u2122","1974 FIFA World Cup Germany \u2122","1970 FIFA World Cup Mexico \u2122","1966 FIFA World Cup England \u2122","1962 FIFA World Cup Chile \u2122","1958 FIFA World Cup Sweden \u2122","1954 FIFA World Cup Switzerland \u2122","1950 FIFA World Cup Brazil \u2122","1938 FIFA World Cup France \u2122","1934 FIFA World Cup Italy \u2122","1930 FIFA World Cup Uruguay \u2122"],"GOALS":[171,145,147,161,171,141,115,132,146,102,97,95,89,89,126,140,88,84,70,70],"LOCATION":["Brazil","South Africa","Germany","Korea/Japan","France","USA","Italy","Mexico","Spain","Argentina","Germany","Mexico","England","Chile","Sweden","Switzerland","Brazil","France","Italy","Uruguay"],"MATCHES":[64,64,64,64,64,52,52,52,52,38,38,32,32,32,35,26,22,18,17,18],"SIZE":{"__ndarray__":"XQ1TKRf1N0AfigABnQswQB+KAAGdCzBAWZf67aTDM0BdDVMpF/U3QF0NUykX9TdAbKevWiy3LEBZl/rtpMMzQG2G2S7XPDpAXQ1TKRf1N0BTxx9o48w1QEBWY0VKLT9AbYbZLtc8OkBthtku1zw6QF7ynMoBl0hAyY8W97/wYEAAAAAAAABQQAMTVNPq8VdA0FN059EEUUDX6edTjwlOQA==","dtype":"float64","order":"little","shape":[20]},"TEAMS":[32,32,32,32,32,24,24,24,24,16,16,16,16,16,16,16,13,15,16,13],"WINNER":["Germany","Spain","Italy","Brazil","France","Brazil","Germany","Argentina","Italy","Argentina","Germany","Brazil","England","Brazil","Brazil","Germany","Uruguay","Italy","Italy","Uruguay"],"YEAR":[2014,2010,2006,2002,1998,1994,1990,1986,1982,1978,1974,1970,1966,1962,1958,1954,1950,1938,1934,1930]},"selected":{"id":"18005"},"selection_policy":{"id":"18004"}},"id":"17990","type":"ColumnDataSource"},{"attributes":{"label":{"field":"CONTINENT"},"renderers":[{"id":"17995"}]},"id":"18007","type":"LegendItem"},{"attributes":{"ticker":null},"id":"18002","type":"LogTickFormatter"},{"attributes":{},"id":"18005","type":"Selection"},{"attributes":{"fill_alpha":{"value":0.1},"fill_color":{"field":"COLORS"},"hatch_alpha":{"value":0.1},"hatch_color":{"field":"COLORS"},"line_alpha":{"value":0.1},"line_color":{"field":"COLORS"},"size":{"field":"SIZE"},"x":{"field":"YEAR"},"y":{"field":"GOALS"}},"id":"17993","type":"Scatter"},{"attributes":{},"id":"18003","type":"AllLabels"},{"attributes":{},"id":"17999","type":"BasicTickFormatter"},{"attributes":{"axis_label":"\u00c5r","coordinates":null,"formatter":{"id":"18002"},"group":null,"major_label_policy":{"id":"18003"},"ticker":{"id":"17980"}},"id":"17979","type":"LogAxis"},{"attributes":{"fill_alpha":{"value":0.8},"fill_color":{"field":"COLORS"},"hatch_alpha":{"value":0.8},"hatch_color":{"field":"COLORS"},"line_alpha":{"value":0.8},"line_color":{"field":"COLORS"},"size":{"field":"SIZE"},"x":{"field":"YEAR"},"y":{"field":"GOALS"}},"id":"17992","type":"Scatter"},{"attributes":{"fill_alpha":{"value":0.2},"fill_color":{"field":"COLORS"},"hatch_alpha":{"value":0.2},"hatch_color":{"field":"COLORS"},"line_alpha":{"value":0.2},"line_color":{"field":"COLORS"},"size":{"field":"SIZE"},"x":{"field":"YEAR"},"y":{"field":"GOALS"}},"id":"17994","type":"Scatter"},{"attributes":{},"id":"17973","type":"DataRange1d"},{"attributes":{"axis_label":"Antall m\u00e5l","coordinates":null,"formatter":{"id":"17999"},"group":null,"major_label_policy":{"id":"18000"},"ticker":{"id":"17984"}},"id":"17983","type":"LinearAxis"}],"root_ids":["17968"]},"title":"Bokeh Application","version":"2.4.2"}}
+        </script>
+        <script type="text/javascript">
+          (function() {
+            const fn = function() {
+              Bokeh.safely(function() {
+                (function(root) {
+                  function embed_document(root) {
+                    
+                  const docs_json = document.getElementById('18505').textContent;
+                  const render_items = [{"docid":"0db749b1-2da5-4a9c-b116-02002f3f6e52","root_ids":["17968"],"roots":{"17968":"a489a8f8-5620-42ea-a3f6-ecff1883a86b"}}];
+                  root.Bokeh.embed.embed_items(docs_json, render_items);
+                
+                  }
+                  if (root.Bokeh !== undefined) {
+                    embed_document(root);
+                  } else {
+                    let attempts = 0;
+                    const timer = setInterval(function(root) {
+                      if (root.Bokeh !== undefined) {
+                        clearInterval(timer);
+                        embed_document(root);
+                      } else {
+                        attempts++;
+                        if (attempts > 100) {
+                          clearInterval(timer);
+                          console.log("Bokeh: ERROR: Unable to run BokehJS code because BokehJS library is missing");
+                        }
+                      }
+                    }, 10, root)
+                  }
+                })(window);
+              });
+            };
+            if (document.readyState != "loading") fn();
+            else document.addEventListener("DOMContentLoaded", fn);
+          })();
+        </script>
+    
+  </body>
+  
+</html>
