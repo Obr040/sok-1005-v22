@@ -1,0 +1,330 @@
+---
+title: "Semesteroppgave"
+output: pdf_document
+date: '2022-06-07'
+---
+
+```{r setup, include=FALSE}
+library(tidyverse)
+library(lubridate)
+```
+
+```{r}
+Data1 <- read_csv("https://data.mendeley.com/public-files/datasets/6htjnfs78b/files/26afd5e7-90b1-4301-ac5e-5905b38c4ec2/file_downloaded")
+Data1 <- rename(Data1, County_Name = Store_County)
+
+
+Data2 <- read_csv("https://data.mendeley.com/public-files/datasets/6htjnfs78b/files/3691994e-2874-4ee6-b215-12e130c96175/file_downloaded")
+Data3 <- read_csv("https://data.mendeley.com/public-files/datasets/6htjnfs78b/files/527e7486-7233-460a-99e0-3529b7cd7d49/file_downloaded")
+Data4 <- read_csv("https://data.mendeley.com/public-files/datasets/6htjnfs78b/files/846ac757-721e-4fd9-a414-5871f60de093/file_downloaded")
+Data5 <- read_csv("https://data.mendeley.com/public-files/datasets/6htjnfs78b/files/b963fdd1-0df9-4257-bd62-65256ec9d57c/file_downloaded")
+
+# Vi endrer navn på butikknummeret og lager en ny variabel, Date.
+
+Data5 <- rename(Data5, Store_Num = Store_num) %>% 
+  mutate(Date = as.Date(with(Data5, paste(Year, Month, Day,sep="-")), "%Y-%m-%d"))
+
+# Så forenkler vi datasettet ved å fjerne de variablene som det ikke er behov for lenger.
+
+Data5 <- subset(Data5, select = -c(Year, Month, Day))
+
+# Til slutt modifiserer vi på varenavnene slik at det blir unisont og ryddig.
+
+Data5$Description = str_to_title(Data5$Description)
+
+Data6 <- read_csv("https://data.mendeley.com/public-files/datasets/6htjnfs78b/files/b8708b3c-c5e8-456e-83f4-9f23f472a840/file_downloaded")
+Data6 <- rename(Data6, Store_Weather_Station = Weather_Station)
+
+# Her må vi endre navnet slik at det matcher med de andre settene.
+
+Data6$Weather_Date <- as.Date(Data6$Weather_Date, format = "%d/%m/%Y")
+
+# Så merger vi de sammen til et datasett.
+
+Frame1 <- merge(Data1, Data6, by = "Store_Weather_Station")
+Frame2 <- merge(Frame1, Data2, by = "County_Name")
+Frame3 <- merge(Frame2, Data3, by = "County_Name")
+Frame4 <- merge(Frame3, Data4, by = "County_Name")
+Frame5 <- left_join(Frame4, Data5, by = c("Store_Num", "Weather_Date" = "Date")) %>% 
+  rename(Date = Weather_Date)
+
+# Vi avslutter med å gi endre navn til dato.
+```
+
+Før vi går igang med oppgave 2 ordner vi oss noen datasett som gjør jobben vår lettere senere. 
+
+```{r}
+Week28 <- Frame5 %>% filter(Store_Num == 9, Weather_Week == 28) %>% 
+  select(Store_Name, Store_Num, Store_City, County_Name, Store_Location, Annual_Rent_Estimate, Weather_Week, Date, INV_NUMBER, Description, Price, Sold, 
+         Sales, Tot_Sls, Unit_Cost, Cost, Cost_Percent, Margin, Profit)
+
+Week29 <- Frame5 %>% filter(Store_Num == 9, Weather_Week == 29) %>% 
+  select(Store_Name, Store_Num, Store_City, County_Name, Store_Location, Annual_Rent_Estimate, Weather_Week, Date, INV_NUMBER, Description, Price, Sold, 
+         Sales, Tot_Sls, Unit_Cost, Cost, Cost_Percent, Margin, Profit)
+
+Week30 <- Frame5 %>% filter(Store_Num == 9, Weather_Week == 30) %>% 
+  select(Store_Name, Store_Num, Store_City, County_Name, Store_Location, Annual_Rent_Estimate, Weather_Week, Date, INV_NUMBER, Description, Price, Sold, 
+         Sales, Tot_Sls, Unit_Cost, Cost, Cost_Percent, Margin, Profit)
+
+Week28A <- Frame5 %>% filter(Weather_Week == 28) %>% 
+  select(Store_Name, Store_Num, Store_City, County_Name, Store_Location, Annual_Rent_Estimate, Weather_Week, Date, INV_NUMBER, Description, Price, Sold, 
+         Sales, Tot_Sls, Unit_Cost, Cost, Cost_Percent, Margin, Profit)
+
+Week29A <- Frame5 %>% filter(Weather_Week == 29) %>% 
+  select(Store_Name, Store_Num, Store_City, County_Name, Store_Location, Annual_Rent_Estimate, Weather_Week, Date, INV_NUMBER, Description, Price, Sold, 
+         Sales, Tot_Sls, Unit_Cost, Cost, Cost_Percent, Margin, Profit)
+
+Week30A <- Frame5 %>% filter(Weather_Week == 30) %>% 
+  select(Store_Name, Store_Num, Store_City, County_Name, Store_Location, Annual_Rent_Estimate, Weather_Week, Date, INV_NUMBER, Description, Price, Sold, 
+         Sales, Tot_Sls, Unit_Cost, Cost, Cost_Percent, Margin, Profit)
+
+Week31A <- Frame5 %>% filter(Weather_Week == 31) %>% 
+  select(Store_Name, Store_Num, Store_City, County_Name, Store_Location, Annual_Rent_Estimate, Weather_Week, Date, INV_NUMBER, Description, Price, Sold, 
+         Sales, Tot_Sls, Unit_Cost, Cost, Cost_Percent, Margin, Profit)
+
+
+Week2 <- rbind(Week28, Week29)
+
+Week3 <- rbind(Week2, Week30)
+
+Week2A <- rbind(Week28A, Week29A)
+
+Week3A <- rbind(Week2A, Week30A)
+  
+Month <- rbind(Week3A, Week31A)
+```
+
+## Oppgave 2
+
+En ukesrapport sendes i hovedsak ut til de ansatte som er knyttet til utsalgsstedet, derfor er det viktig at en slik rapport tar med seg sentrale mål for utsalgsstedet. Salgstallene er derfor svært sentralt, men også salgstallene, kostnadene og ikke minst hvilke produkter som selges mest. I dette datasettet er det over 500 forskjellige varer, men det er dessverre ikke en enkel måte på å få sortert varene til varegrupper da f.eks. da noen sandwicher har sandwich i navnet, mens andre kun har hva som er på selve sandwichen som varenavn. 
+
+I denne oppgaven fokuserer vi på utsalgsstedet Littletown StripMall i Appleton County. Vi skal se nærmere på uke 29
+
+```{r}
+MostSold <- Week29 %>% filter(Sold >= 80) %>% 
+  ggplot(aes(Description, Sold, fill = Description)) +
+  geom_bar(stat = "identity") +
+  labs(title = "Mest solgte varer i Littletown Stripmall Uke 29") +
+  xlab("Varetype") +
+  ylab("Solgte enheter") +
+  theme_classic() +
+  theme(text = element_text(size=10),
+        axis.text.x = element_text(size = 0))
+
+MostSold
+```
+Vi kan se at det er to produkter som skiller seg ut fra resten varene som selges, Chips og 21oz Drink. Dette er produkter som er veldig enkelt å konsumere noe som gjør dette til to helt naturlige  bestselgere. 
+
+```{r}
+MostProf <- Week29 %>% filter(Profit >= 300) %>% 
+  ggplot(aes(Description, Profit, fill = Description)) +
+  geom_bar(stat = "identity") +
+  labs(title = "Mest profitable varer i Littletown Stripmall") +
+  xlab("Varetype") +
+  ylab("Profit (USD)") +
+  theme_classic() +
+  theme(text = element_text(size=10),
+        axis.text.x = element_text(size = 0))
+
+MostProf
+```
+
+Her har vi gått inn for å se hvilke produkter utsalgsstedet tjente mest på å selge i samme periode. Som vi ser har Sandwichene dominerer blant profiten, men vi ser også at bestselgerne også er noen av produktene som utsalgsstedet tjener mest på.
+
+```{r}
+Week3Prof <- Week3 %>% 
+  group_by(Weather_Week) %>% 
+  summarise(Tot3Prof = sum(Profit)) %>% 
+  ggplot(aes(Weather_Week, Tot3Prof)) +
+  geom_bar(stat = "identity", aes(fill = Weather_Week)) +
+  labs(title = "Ukelig profitt for Littletown Stripmall") +
+  xlab("Ukenr.") +
+  ylab("Profit (USD)") +
+  theme_classic()
+  
+Week3Prof
+```
+
+Vanligvis vil det være naturlig å sammenligne med den kommende uken på bakgrunn av historiske tall. Årsaken til at dette er relevant er fordi at uketallene er mer presis på å følge "høytider og faste"toppene" og "bunnene" i aktivitet som f.eks. en salgsøkning i juletidene når folk er ute å handler inn. Som vi ser har de i uke 29 vært litt lavere profitt enn den foregående og den neste uken, 
+
+
+## Oppgave 3
+Ukesrapporter brukes primært til å gjengi informasjon og statistikk om uken som gikk. En månedsrapport vil ha mye av den samme informasjonen, men den vil i all hovedsak bli benyttet til å planlegge og optimalisere fremtiden for bedriften. Salg og kostnader kan svinge fra uke til uke, men ved å lage seg slike månedsrapporter er det lettere for konsernet å oppdage trender og endringer i kundemønsteret.Her ville det vært optimalt dersom det var mulig å skille varene inn i varegrupper slik at konsernet har mulighet til å se hvilket segment som selger og tjener best, men med 503 varer er det veldig tidskrevende. 
+
+```{r}
+SaleAll <- Month %>% 
+  group_by(Store_Name, Date) %>% 
+  summarise(AllSale = sum(Sold)) %>% 
+  ggplot(aes(Date, AllSale, col = Store_Name)) +
+  geom_line() + 
+  labs(title = "Salgsvolum for samtlige utssalgsteder i Juli") +
+  xlab("Dato") +
+  ylab("Antall varer solgt") +
+  theme_classic()
+
+SaleAll
+```
+
+Vi starter med å se på salgsvolumet til utsalgsstedene, denne figuren viser oss hvor mange varer utsalgsstedet har solgt i løpet av måneden. Som vi ser Power City Freestand helt alene i toppen av salg.
+
+```{r}
+RevenueAll <- Month %>% 
+  mutate(Revenue = Sold * Price) %>% 
+  group_by(Store_Name, Date) %>% 
+  summarise(AllRevenue = sum(Revenue)) %>% 
+  ggplot(aes(Date, AllRevenue, col = Store_Name)) +
+  geom_line() + 
+  labs(title = "Salgsinntekter for samtlige utssalgsteder i Juli") +
+  xlab("Dato") +
+  ylab("Inntekt (USD)") +
+  theme_classic()
+
+RevenueAll
+```
+
+Når vi har funnet volumet så må vi å finne hvor mye konsernet har fått inn i inntekt av varene de har solgt. Som vi ser har ikke grafen endret seg markant hos noen av utsalgsstedene, noe som er naturlig da det ikke er store sprik i prisene på varene. 
+
+```{r}
+CostAll <- Month %>% 
+  group_by(Store_Name, Date) %>% 
+  summarise(AllCost = sum(Cost)) %>% 
+  ggplot(aes(Date, AllCost, col = Store_Name)) +
+  geom_line() + 
+  labs(title = "Kostnader for samtlige utssalgsteder i Juli") +
+  xlab("Dato") +
+  ylab("Kostnad (USD)") +
+  theme_classic()
+
+CostAll 
+```
+
+Det er å viktig for konsernet å se hvor store utgifter hvert utsalgssted har. Grafene her følger i stor grad det samme mønsteret som vi så i både inntekt og volumsfigurene. Det er Power City Freestand som ruver høyest på denne også.
+
+```{r}
+ProfittAll <- Month %>% 
+  group_by(Store_Name, Date) %>% 
+  summarise(AllProf = sum(Profit)) %>% 
+  ggplot(aes(reorder(Store_Name,-AllProf), AllProf, fill = Store_Name)) +
+  geom_col() + 
+  labs(title = "Profitt for samtlige utssalgsteder i Juli") +
+  xlab("Utsalgssted") +
+  ylab("Profit (USD)") +
+  theme_classic() +
+  theme(text = element_text(size=10),
+        axis.text.x = element_text(size = 0))
+
+ProfittAll 
+```
+
+Til slutt må vi finne ut hvor mye hvert enkelt utsalgssted tjente i løpet av denne måneden. Her ser vi igjen at Power City Freehand er den store inntjeneren blant utsalgsstedene. Vi ser også at University Town BigBox er utsalgsstedet med lavest profitt.
+
+```{r}
+SaleDescAll <- Month %>% 
+  select(Store_Name, Date, Description, Sold) %>% 
+  group_by(Store_Name) %>% 
+  filter(Sold == max(Sold))
+
+SaleDescAll %>% 
+  ggplot(aes(Description, col = Store_Name, fill = Store_Name)) +
+  geom_bar() + 
+  labs(title = "Den mest solgte varen for utsalgsstedene") +
+  xlab("Varenavn") +
+  ylab("Antall utsalgssted") +
+  theme_bw()
+```
+
+Så retter vi fokus over på produktene, som jeg sa i innledningen til denne oppgaven brukes slike rapporter som et verktøy for å planlegge videre drift. Det er mye enklere å danne seg et bilde av markedssituasjonen, trender og kundemønsteret når man får et større datagrunnlag. Vi ser her at resultatet fra ukesrapporten også inntreffer her. Dette viser at det er en klar korrelasjon mellom salgstallene og disse "lavterskel" produktene som man kan ta med seg i farta. Dette er produkt som det er grei profitt på, noe som betyr at utsalgsstedene har et potensiale til å presse prisen litt ned og kanskje dermed øke etterspørselen eller bare skape mersalg.
+
+
+```{r}
+ProfDescAll <- Month %>% 
+  select(Store_Name, Date, Description, Profit) %>% 
+  group_by(Store_Name) %>% 
+  filter(Profit == max(Profit))
+  
+
+ProfDescAll %>% 
+  ggplot(aes(Description, col = Store_Name, fill = Store_Name)) +
+  geom_bar() + 
+  labs(title = "Den mest profitable varen for utsalgsstedene") +
+  xlab("Varenavn") +
+  ylab("Profitt (USD)") +
+  theme_bw()
+
+```
+
+Vi ser hvilket produkt som er mest profitabel for utsalgsstedene, her også ser man samme mønster som i ukesrapporten hvor sandwichene har gode marginer og skaper derfor gode inntekter for samtlige utsalgssteder. Årsaken til at det er sandwichene som gir mest profit kan tenkes at mange av disse utsalgsstedene er plassert hvor mange folk ferdes samt at konsernet mest sannsynlig har gode innkjøpspriser på råvarer som gjør at det koster mindre å lage produktet sammenlignet med konkurrenter.
+ 
+## Oppgave 4
+
+Datasettet vi har fått har svært mange variabler som kan brukes til å hjelpe konsernet med å finne en optimal lokasjon for et fremtidig utsalgssted. Vi starter med å sammenligne profitten i fylkene, som vi har sett tidligere er det noen utsalgssteder som ikke har særlig salg og er dermed ikke et egnet område til å åpne et nytt utsalgssted.
+
+```{r}
+Frame5 %>% 
+  select(County_Name, Store_Name, Profit) %>% 
+  group_by(Store_Name, County_Name) %>% 
+  summarise(Profit = sum(Profit)) %>% 
+  ggplot(aes(County_Name, Profit, fill = County_Name, position_stack(vjust = 0))) +
+  geom_col() +
+  labs(title = "Samlet profitt for fylkene") +
+  xlab("Fylke") +
+  ylab("Profit (USD)") +
+  scale_y_continuous(limits = c(0, 1500000)) +
+  theme_classic()
+```
+Som vi ser ligger mye av profitten i et fylke, nemlig Power County.
+Det neste vi må se på er lokasjonen av utsalgsstedene, som vi så på månedsrapporten var det et sted toppet samtlige statistikker, Power City Freestand. 
+
+```{r}
+Frame5 %>% 
+  select(County_Name, Store_Name, Profit, Store_Location) %>% 
+  group_by(Store_Name, Store_Location) %>% 
+  summarise(Profit = sum(Profit)) %>% 
+  ggplot(aes(Store_Location, Profit, fill = Store_Location)) +
+  geom_col(aes(fill = Store_Name)) +
+  labs(title = "Profitt basert på utsalgsstedenes lokasjon") +
+  xlab("Lokasjon") +
+  ylab("Profit (USD)") +
+  scale_y_continuous(limits = c(0,2000000)) +
+  theme_classic()
+```
+Her ser vi at Power City Freestand har den definitivt høyeste profitten av de individuelle utsalgsstedene, men konsernet har fokusert på å ha stedene i Strip Mall, noe som samlet sett gir konsernet en god profitt.
+
+```{r}
+Frame5 %>% 
+  select(Store_Name, Profit, Store_Drive_Through, Store_Competition_Fastfood) %>% 
+  group_by(Store_Name, Store_Drive_Through, Store_Competition_Fastfood) %>% 
+  summarise(Profit = sum(Profit)) %>% 
+  ggplot(aes(Store_Name, Profit, fill = Store_Drive-Through)) +
+  geom_col(aes(fill = Store_Drive_Through)) +
+  labs(title = "Profitt med og uten Drive-Through") +
+  xlab("Utsalgssted") +
+  ylab("Profit (USD)") +
+  scale_y_continuous(labels = scales::comma) +
+  theme_classic() +
+  theme(text = element_text(size=10),
+        axis.text.x = element_text(size = 4.5))
+```
+
+En annen spennende variabel som kan ha en innvirkning på salget er muligheten til drive through, som vi ser er det kun to steder som har drive-through per i dag. Det vi kan se er at den høyeste profitten stammer fra et utsalgssted med drive through.
+
+```{r}
+Frame5 %>% 
+  select(Store_Name, Profit, Store_Near_School) %>% 
+  group_by(Store_Name, Store_Near_School) %>% 
+  summarise(Profit = sum(Profit)) %>% 
+  ggplot(aes(Store_Name, Profit)) +
+  geom_col(aes(fill = Store_Near_School)) +
+  labs(title = "Profitt basert på utsalgsstedenes lokasjon") +
+  xlab("Lokasjon") +
+  ylab("Profit (USD)") +
+  scale_y_continuous(labels = scales::comma) +
+  theme_classic() +
+  theme(text = element_text(size=10),
+        axis.text.x = element_text(size = 4.5))
+```
+
+Til slutt skal vi se om nærhet til skoler har en innvirkning på profitten til utsalgsstedene. Vi ser her at kun 4 utsalgssteder er i nærheten av en skole, men av de 4 er tre av de inne blant topp 5 i profitt. Det kan dermed tenkes at mange skoleelever kommer innom for å kjøpe en lunch eller litt snacks og legger derfor igjen mer penger.
+
+## Oppsummering
+Vi har med hjelp av disse variabelene sett at et fremtidig utsalgssted burde legges til Power County. Utsalgsstedene i dette fylket opererer med gode marginer og har derfor grunnlag til slippe til et nytt utsalgssted. Dette utsalgsstedet burde ligge nært en skole, samt at statistikken viser at et frittstående utsalgssted både gir økte inntekter, men også muligheten til å ha en drive through. 
