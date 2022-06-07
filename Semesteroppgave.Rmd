@@ -9,6 +9,8 @@ library(tidyverse)
 library(lubridate)
 ```
 
+## Kandidatnummer 7
+
 ```{r}
 Data1 <- read_csv("https://data.mendeley.com/public-files/datasets/6htjnfs78b/files/26afd5e7-90b1-4301-ac5e-5905b38c4ec2/file_downloaded")
 Data1 <- rename(Data1, County_Name = Store_County)
